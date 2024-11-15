@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentInput = '';
     let operator = '';
     let firstValue = '';
-    let secondValue = '';
-    let result = '';
     let resetScreen = false;
     
     buttons.forEach(button => {
@@ -32,24 +30,25 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             screen.value += number;
         }
-        currentInput = screen.value.replace(/ /g, '');
+        currentInput = screen.value;
     }
     
     function handleOperator(op) {
         if (op === '=') {
-            if (operator && firstValue && currentInput) {
-                secondValue = currentInput;
+            if (operator && firstValue !== '' && currentInput !== '') {
+                let secondValue = currentInput.split(operator)[1]; // Получаем второе число после оператора
                 result = calculate(firstValue, operator, secondValue);
                 screen.value = result;
                 currentInput = result;
                 resetScreen = true;
+                operator = '';
             }
         } else {
-            if (currentInput && !resetScreen) {
+            if (currentInput !== '' && !resetScreen) {
                 firstValue = currentInput;
                 operator = op;
                 screen.value += ` ${op} `;
-                resetScreen = true;
+                resetScreen = false;
             }
         }
     }
@@ -77,12 +76,10 @@ document.addEventListener('DOMContentLoaded', function () {
         currentInput = '';
         operator = '';
         firstValue = '';
-        secondValue = '';
-        result = '';
     }
     
     function deleteLastChar() {
         screen.value = screen.value.slice(0, -1);
-        currentInput = screen.value.replace(/ /g, '');
+        currentInput = screen.value;
     }
 });
